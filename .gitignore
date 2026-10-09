@@ -1,0 +1,41 @@
+# Environnement Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Outils
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.streamlit/secrets.toml
+
+# Extraction locale du classeur (voir scripts/extraire_excel.py)
+extraction/
+
+# Classeurs Excel : non versionnés (métadonnées locales dans le projet VBA).
+*.xlsm
+excel/
+
+# Archive de livraison
+*.zip
+
+# Système
+.DS_Store
+
+# Fichiers de verrouillage Office
+~$*
+.~lock.*
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+*.log
+
+# Notes personnelles (non publiques)
+docs/ENTRETIEN.md

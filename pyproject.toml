@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pricer"
+version = "1.0.0"
+description = "Pricer d'options (européennes, américaines, asiatiques, barrières) : formules fermées, arbres et Monte-Carlo"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Rayane ALKHALAF" }]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "streamlit>=1.60",
+    "altair>=5.5",
+    "pandas>=2.1",
+]
+
+[project.optional-dependencies]
+dev = ["matplotlib>=3.8", "pytest>=8", "ruff>=0.5", "jupyter", "nbconvert", "ipykernel", "oletools", "openpyxl"]
+
+[tool.setuptools]
+packages = ["pricer"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "NPY", "SIM"]
+# E741 : les noms courts (l, I) n'apparaissent pas ; N806 non activé car la
+# notation financière (S, K, T, H) est volontairement conservée.
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/*.ipynb" = ["E402"]

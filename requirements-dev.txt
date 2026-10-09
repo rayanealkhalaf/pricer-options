@@ -1,0 +1,13 @@
+-r requirements.txt
+
+# Développement, tests et notebook
+matplotlib>=3.8,<4
+pytest>=8
+ruff>=0.5
+jupyter
+nbconvert
+ipykernel
+
+# Lecture du classeur Excel d'origine (scripts/extraire_excel.py)
+oletools
+openpyxl

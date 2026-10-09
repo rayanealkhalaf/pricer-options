@@ -1,0 +1,6 @@
+# Dépendances d'exécution (installées par Streamlit Community Cloud)
+numpy>=1.26,<3
+scipy>=1.11,<2
+streamlit>=1.60,<2
+altair>=5.5,<7
+pandas>=2.1,<4

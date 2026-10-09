@@ -1,0 +1,355 @@
+/* Feuille de style de l'interface (chargée par interface/design.py).
+   Encre et citron : fond presque noir, accent unique vert citron.
+   Tous les textes ont un contraste d'au moins 4,5:1 (WCAG AA). */
+
+:root {
+  --fond: #08090a;
+  --surface: #101113;
+  --surface-2: #16181b;
+  --bord: #23262b;
+  --bord-fort: #33373e;
+  --texte: #ededef;
+  --discret: #a1a1aa;
+  --sourd: #8b8b94;
+  --citron: #c8f135;
+  --ambre: #fbbf24;
+  --corail: #ff8a65;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Animations (profondeur 3D) ---------- */
+
+@keyframes entrer3d {
+  from { opacity: 0; transform: perspective(900px) rotateX(10deg) translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+/* Sans perspective : les tableaux et graphiques mesurent leur largeur à l'affichage. */
+@keyframes glisser {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes apparaitre {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Fond et mise en page ---------- */
+
+.stApp {
+  background:
+    radial-gradient(60% 40% at 85% -5%, rgba(200, 241, 53, 0.06), transparent 70%),
+    var(--fond);
+}
+[data-testid="stHeader"] {
+  background: rgba(8, 9, 10, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--bord);
+}
+[data-testid="stMainBlockContainer"] {
+  max-width: 1280px;
+  padding-top: 4rem;
+}
+
+/* ---------- Typographie ---------- */
+
+h1, h2, h3, h4 {
+  letter-spacing: -0.02em;
+}
+[data-testid="stCaptionContainer"], .stCaption {
+  color: var(--discret) !important;
+}
+code {
+  font-family: var(--mono);
+}
+
+/* ---------- Focus clavier visible ---------- */
+
+a:focus-visible,
+button:focus-visible,
+[role="tab"]:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--citron) !important;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ---------- En-tête : titre + surface 3D ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 2rem;
+  align-items: center;
+  padding: 0.5rem 0 1.5rem;
+  animation: entrer3d 0.7s var(--ease) both;
+}
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 0.5rem; }
+}
+.hero h1 {
+  margin: 0;
+  padding: 0;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--texte);
+}
+.hero h1 span {
+  color: var(--citron);
+}
+.hero p {
+  margin: 0.9rem 0 0;
+  max-width: 460px;
+  color: var(--discret);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+.surface3d {
+  position: relative;
+  height: 250px;
+}
+.surface3d canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.surface3d figcaption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: var(--sourd);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+/* ---------- Onglets ---------- */
+
+[data-testid="stTabs"] [role="tablist"] {
+  gap: 0.2rem;
+  height: auto;
+  padding: 0.25rem;
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  background: var(--surface);
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+[data-testid="stTabs"] [role="tablist"]::after {
+  display: none;
+}
+[data-testid="stTab"] {
+  height: auto;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9px;
+  color: var(--discret);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+[data-testid="stTab"] * {
+  border-bottom: none !important;
+}
+[data-testid="stTab"]:hover {
+  color: var(--texte);
+}
+[data-testid="stTab"][aria-selected="true"] {
+  color: #08090a;
+  background: var(--citron);
+  font-weight: 600;
+}
+[data-testid="stTabPanel"] {
+  padding-top: 1.2rem;
+  animation: glisser 0.35s var(--ease) both;
+}
+
+/* ---------- Titres de section ---------- */
+
+.section {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 1.8rem 0 0.7rem;
+  animation: apparaitre 0.4s ease both;
+}
+.section-numero {
+  color: var(--citron);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+.section h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--texte);
+}
+
+/* ---------- Cartes d'indicateurs (inclinaison 3D au survol) ---------- */
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0.2rem 0 0.6rem;
+  perspective: 1000px;
+}
+@media (max-width: 900px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.kpi {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--bord);
+  border-radius: 14px;
+  background: var(--surface);
+  transform-style: preserve-3d;
+  animation: entrer3d 0.5s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+  transition: transform 0.35s var(--ease), border-color 0.25s, box-shadow 0.35s;
+}
+.kpi:hover {
+  transform: rotateX(7deg) rotateY(-5deg) translateZ(12px);
+  border-color: var(--bord-fort);
+  box-shadow: 0 22px 40px -24px rgba(200, 241, 53, 0.35);
+}
+.kpi--accent {
+  border-color: rgba(200, 241, 53, 0.5);
+  background: linear-gradient(160deg, rgba(200, 241, 53, 0.09), transparent 55%), var(--surface);
+}
+.kpi--accent .kpi-valeur {
+  color: var(--citron);
+}
+.kpi-libelle {
+  color: var(--discret);
+  font-size: 0.8rem;
+}
+.kpi-valeur {
+  margin-top: 0.3rem;
+  color: var(--texte);
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kpi-valeur--long {
+  font-size: 1.1rem;
+  padding-top: 0.3rem;
+}
+.kpi-aide {
+  margin-top: 0.35rem;
+  color: var(--sourd);
+  font-size: 0.78rem;
+}
+
+/* Pastilles de validation : couleur + texte, jamais la couleur seule. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.badge--ok { color: var(--citron); background: rgba(200, 241, 53, 0.1); }
+.badge--alerte { color: var(--ambre); background: rgba(251, 191, 36, 0.12); }
+.badge--echec { color: var(--corail); background: rgba(255, 138, 101, 0.12); }
+
+/* ---------- Titres de graphiques ---------- */
+
+.titre-graphique {
+  margin: 1rem 0 0.3rem;
+  color: var(--texte);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ---------- Composants Streamlit ---------- */
+
+[data-testid="stVegaLiteChart"] {
+  border: 1px solid var(--bord);
+  border-radius: 14px;
+  background: var(--surface);
+  animation: apparaitre 0.5s ease both;
+}
+[data-testid="stDataFrame"] {
+  border-radius: 12px;
+  overflow: hidden;
+  animation: apparaitre 0.4s ease both;
+}
+[data-testid="stAlert"] {
+  border-radius: 12px;
+}
+[data-testid="stExpander"] details {
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+[data-testid="stExpander"] details:hover {
+  border-color: var(--bord-fort);
+}
+[data-testid="stExpander"] summary {
+  cursor: pointer;
+}
+[data-testid="stSidebar"] {
+  border-right: 1px solid var(--bord);
+}
+[data-testid="stSidebarContent"] {
+  background: #0b0c0e;
+}
+.sidebar-titre {
+  margin: 0.6rem 0 0.15rem;
+  color: var(--sourd);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[data-testid="stNumberInput"] input,
+[data-testid="stTextInput"] input {
+  font-family: var(--mono);
+  font-size: 0.88rem;
+}
+[data-testid="stBaseButton-secondary"] {
+  cursor: pointer;
+}
+
+/* ---------- Pied de page ---------- */
+
+.pied {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding: 1.2rem 0 0.5rem;
+  border-top: 1px solid var(--bord);
+  color: var(--sourd);
+  font-size: 0.82rem;
+}
+.pied a {
+  color: var(--discret);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.pied a:hover { color: var(--citron); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .kpi:hover { transform: none; }
+}
